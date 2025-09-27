@@ -112,6 +112,7 @@ const Brands = () => {
             </table>
 
             {/* ✅ Separate AddBrandModal Component */}
+            
             <AddBrand
                 show={showModal}
                 onClose={() => setShowModal(false)}

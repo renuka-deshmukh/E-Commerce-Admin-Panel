@@ -92,6 +92,7 @@ const Categories = () => {
             </table>
 
             {/* Add Category Modal */}
+            
             <AddCategory
                 show={showModal}
                 onClose={() => setShowModal(false)}
