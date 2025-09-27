@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { createBrands, deleteBrand, getAllBrands } from "../../services/brandApi";
-import { FaTrash, FaPlus } from "react-icons/fa";
+import { FaTrash, FaPlus, FaEdit } from "react-icons/fa";
 import { toast } from "react-toastify";
 import AddBrand from "./AddBrand";
+import UpdateBrand from "./UpdateBrand";
 
 const Brands = () => {
     const [brands, setBrands] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [newBrand, setNewBrand] = useState("");
+
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [selectedBrand, setSelectedBrand] = useState(null);
 
     async function fetchData() {
         try {
@@ -92,6 +96,14 @@ const Brands = () => {
                                 <td>{i + 1}</td>
                                 <td>{brand.bName}</td>
                                 <td>
+                                    <button className="btn btn-sm btn-primary me-2"
+                                        onClick={() => {
+                                            setSelectedBrand(brand);
+                                            setShowEditModal(true);
+                                        }}
+                                    >
+                                        <FaEdit />
+                                    </button>
                                     <button
                                         className="btn btn-sm btn-danger"
                                         onClick={() => handleDeleteBrand(brand.id)} // pass the actual id
@@ -112,13 +124,21 @@ const Brands = () => {
             </table>
 
             {/* ✅ Separate AddBrandModal Component */}
-            
+
             <AddBrand
                 show={showModal}
                 onClose={() => setShowModal(false)}
                 onSubmit={handleAddBrand}
                 newBrand={newBrand}
                 setNewBrand={setNewBrand}
+            />
+
+            <UpdateBrand
+                show={showEditModal}
+                onClose={() => setShowEditModal(false)}
+                brand={selectedBrand}
+                onUpdated={fetchData}
+
             />
         </div>
     );

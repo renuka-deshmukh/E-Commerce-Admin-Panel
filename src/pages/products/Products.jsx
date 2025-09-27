@@ -22,7 +22,6 @@ const Products = () => {
     brandID: "",
   });
 
-  const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -128,7 +127,8 @@ const Products = () => {
                 <td>{getBrandName(Product.brandID)}</td>
                 <td>
                   <button className="btn btn-sm btn-primary me-2"
-                  onClick={() => { setSelectedProduct(Product); setShowEditModal(true); }}
+                  onClick={() => { setSelectedProduct(Product);
+                                   setShowEditModal(true); }}
                   >
                     <FaEdit />
                   </button>

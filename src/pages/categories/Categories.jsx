@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { deleteCategory, getAllCategories } from "../../services/categoryApi";
-import { FaTrash, FaPlus } from "react-icons/fa";
+import { FaTrash, FaPlus, FaEdit } from "react-icons/fa";
 import { toast } from "react-toastify";
 import AddCategory from "./AddCategory";
+import UpdateCategory from "./UpdateCategory";
 
 
 const Categories = () => {
     const [categories, setCategories] = useState([]);
     const [showModal, setShowModal] = useState(false);
+
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
     // fetch categories
     async function fetchData() {
@@ -73,6 +77,15 @@ const Categories = () => {
                                 <td>{i + 1}</td>
                                 <td>{cat.cName}</td>
                                 <td>
+                                    <button className="btn btn-sm btn-primary me-2"
+                                        onClick={() => {
+                                            setSelectedCategory(cat);
+                                            setShowEditModal(true);
+                                        }}
+                                    >
+                                        <FaEdit />
+                                    </button>
+
                                     <button className="btn btn-sm btn-danger"
                                         onClick={() => handleDeleteCategory(cat.id)}
                                     >
@@ -92,11 +105,19 @@ const Categories = () => {
             </table>
 
             {/* Add Category Modal */}
-            
+
             <AddCategory
                 show={showModal}
                 onClose={() => setShowModal(false)}
                 onSuccess={fetchData}
+            />
+
+            <UpdateCategory
+                show={showEditModal}
+                onClose={() => setShowEditModal(false)}
+                category={selectedCategory}
+                onUpdated={fetchData}
+
             />
         </div>
     );

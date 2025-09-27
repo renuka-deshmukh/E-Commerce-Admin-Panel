@@ -5,3 +5,5 @@ export const getAllCategories = () => axiosInstance.get('/category/getAllCategor
 export const createCategory = (data) => axiosInstance.post('/category/createCategory', data);
 
 export const deleteCategory = (id) => axiosInstance.delete(`/category/deleteCategory/${id}`);
+
+export const updateCategory = (id, formData) => axiosInstance.put(`/category/updateCategory/${id}`, formData)
