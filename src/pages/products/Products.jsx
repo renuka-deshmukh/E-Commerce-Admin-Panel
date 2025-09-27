@@ -6,6 +6,7 @@ import { getAllCategories } from "../../services/categoryApi";
 import { getAllBrands } from "../../services/brandApi";
 import AddProduct from "./AddProduct";
 import DeleteProduct from "./DeleteProduct";
+import UpdateProduct from "./UpdateProduct";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -20,6 +21,11 @@ const Products = () => {
     catID: "",
     brandID: "",
   });
+
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
 
   async function fetchData() {
     try {
@@ -121,12 +127,12 @@ const Products = () => {
                 <td>{getCategoryName(Product.catID)}</td>
                 <td>{getBrandName(Product.brandID)}</td>
                 <td>
-                  <button className="btn btn-sm btn-primary me-2">
+                  <button className="btn btn-sm btn-primary me-2"
+                  onClick={() => { setSelectedProduct(Product); setShowEditModal(true); }}
+                  >
                     <FaEdit />
                   </button>
-                  {/* <button className="btn btn-sm btn-danger">
-                    <FaTrash />
-                  </button> */}
+      
                   <DeleteProduct productID={Product.id}
                     onDelete={fetchData}
                   />
@@ -152,6 +158,16 @@ const Products = () => {
         setNewProduct={setNewProduct}
         categories={categories}
         brands={brands}
+      />
+
+       {/* Edit Modal */}
+      <UpdateProduct
+        show={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        product={selectedProduct}
+        categories={categories}
+        brands={brands}
+        onUpdated={fetchData}
       />
     </div>
   );
