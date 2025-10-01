@@ -1,0 +1,37 @@
+.custom-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px; /* gap between rows */
+}
+
+.custom-table thead tr {
+  background: #f8f9fa;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.custom-table th {
+  padding: 12px;
+  color: #495057;
+  font-weight: 600;
+  border: none;
+}
+
+.custom-table td {
+  background: #ffffff;
+  padding: 14px 12px;
+  border: none;
+  vertical-align: middle;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.custom-table tr {
+  border-radius: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.custom-table tr:hover td {
+  background: #f1f5ff;
+  transform: scale(1.01);
+}

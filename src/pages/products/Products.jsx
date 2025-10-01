@@ -7,6 +7,7 @@ import { getAllBrands } from "../../services/brandApi";
 import AddProduct from "./AddProduct";
 import DeleteProduct from "./DeleteProduct";
 import UpdateProduct from "./UpdateProduct";
+import "./Products.css"
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -85,69 +86,73 @@ const Products = () => {
 
   return (
     <div className="card shadow-sm p-3">
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4> Products</h4>
-        <button
-          className="btn"
-          style={{
-            background: "linear-gradient(90deg, #2575fc, #6a11cb)",
-            color: "white",
-            borderRadius: "8px",
-          }}
-          onClick={() => setShowModal(true)}
-        >
-          <FaPlus className="me-2" /> Add New Product
-        </button>
-      </div>
+      <div className="card shadow-sm p-3 bg-white rounded">
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h4 className="fw-bold">All Product List</h4>
+          <button
+            className="btn btn-primary d-flex align-items-center"
+            style={{
+              background: "linear-gradient(90deg, #6a11cb, #2575fc)",
+              borderRadius: "10px",
+              padding: "8px 16px",
+            }}
+            onClick={() => setShowModal(true)}
+          >
+            <FaPlus className="me-2" /> Add Product
+          </button>
+        </div>
 
-      {/* Products Table */}
-      <table className="table table-striped table-bordered table-hover">
-        <thead className="table-dark">
-          <tr>
-            <th scope="col">Sr. No</th>
-            <th scope="col">Product Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Price</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Category</th>
-            <th scope="col">Brand</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.length > 0 ? (
-            products.map((Product, i) => (
-              <tr key={Product.id || i}>
-                <td>{i + 1}</td>
-                <td>{Product.pName}</td>
-                <td>{Product.pDescription}</td>
-                <td>{Product.price}</td>
-                <td>{Product.quentity}</td>
-                <td>{getCategoryName(Product.catID)}</td>
-                <td>{getBrandName(Product.brandID)}</td>
-                <td>
-                  <button className="btn btn-sm btn-primary me-2"
-                  onClick={() => { setSelectedProduct(Product);
-                                   setShowEditModal(true); }}
-                  >
-                    <FaEdit />
-                  </button>
-      
-                  <DeleteProduct productID={Product.id}
-                    onDelete={fetchData}
-                  />
+        {/* ✅ Styled Table */}
+        <table className="table align-middle custom-table">
+          <thead>
+            <tr>
+              <th>Product Name & Size</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Category</th>
+              <th>Brand</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.length > 0 ? (
+              products.map((Product, i) => (
+                <tr key={Product.id || i}>
+                  <td className="fw-semibold">
+                    {Product.pName}
+                    <div className="text-muted small">{Product.pDescription}</div>
+                  </td>
+                  <td>${Product.price}</td>
+                  <td>
+                    <span className="fw-bold">{Product.quentity} Item left</span>
+                  </td>
+                  <td>{getCategoryName(Product.catID)}</td>
+                  <td>{getBrandName(Product.brandID)}</td>
+                  <td>
+                    <button
+                      className="btn btn-sm btn-outline-primary me-2"
+                      onClick={() => {
+                        setSelectedProduct(Product);
+                        setShowEditModal(true);
+                      }}
+                    >
+                      <FaEdit />
+                    </button>
+                    <DeleteProduct productID={Product.id} onDelete={fetchData} />
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="8" className="text-center text-muted">
+                  No Product available
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="8" className="text-center">
-                No Product available
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
+      </div>
+
 
       {/* ✅ Separate AddProductModal Component */}
       <AddProduct
@@ -160,7 +165,7 @@ const Products = () => {
         brands={brands}
       />
 
-       {/* Edit Modal */}
+      {/* Edit Modal */}
       <UpdateProduct
         show={showEditModal}
         onClose={() => setShowEditModal(false)}

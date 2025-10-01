@@ -1,0 +1,75 @@
+/* brand Card */
+.brand-card {
+  position: relative;
+  width: 180px;   /* smaller card */
+  height: 180px;  /* square card */
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease-in-out;
+}
+
+.brand-card:hover {
+  transform: translateY(-6px);
+}
+
+/* brand Image */
+.brand-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* Overlay on Hover */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.brand-card:hover .overlay {
+  opacity: 1;
+}
+
+/* Overlay Text */
+.overlay-text {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+/* Action Buttons on Hover */
+.overlay-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.overlay-actions .btn {
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+}
+
+/* brand Name below Card */
+.brand-name-below {
+  text-align: center;
+  font-weight: 500;
+  margin-top: 8px;
+  transition: opacity 0.3s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Hide below name on hover */
+.brand-card:hover + .brand-name-below {
+  opacity: 0;
+}
