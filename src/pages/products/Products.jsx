@@ -106,7 +106,7 @@ const Products = () => {
         <table className="table align-middle custom-table">
           <thead>
             <tr>
-              <th>Product Name & Size</th>
+              <th>Product Name & Details</th>
               <th>Price</th>
               <th>Stock</th>
               <th>Category</th>
