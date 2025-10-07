@@ -1,58 +1,40 @@
 import React, { useState } from "react";
-import { createCategory } from "../../services/categoryApi";
 import { toast } from "react-toastify";
 
-const AddCategory = ({ show, onClose, onSuccess }) => {
-  const [newCategory, setNewCategory] = useState("");
-
-  const handleAddCategory = async (e) => {
-    e.preventDefault();
-    if (!newCategory.trim()) return;
-
-    try {
-      const response = await createCategory({ cName: newCategory });
-      if (response.data.success) {
-        toast.success("Category created successfully ✅");
-        setNewCategory("");
-        onSuccess(); // refresh categories
-        onClose();   // close modal
-      } else {
-        toast.error("Failed to create category ❌");
-      }
-    } catch (error) {
-      toast.error("Error creating category ❌");
-    }
-  };
+const AddCategory = ({ show, onClose, onSubmit }) => {
+  const [cName, setCName] = useState("");
+  const [cImage, setCImage] = useState(null);
 
   if (!show) return null;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!cName.trim()) {
+      return toast.error("Please enter category name ❌");
+    }
+
+    const formData = new FormData();
+    formData.append("cName", cName);
+    if (cImage) formData.append("myfile", cImage); // must match backend multer field name
+
+    onSubmit(formData);
+
+    // Reset fields after submit
+    setCName("");
+    setCImage(null);
+  };
 
   return (
     <div
       className="modal show d-block"
       tabIndex="-1"
-      style={{
-        backgroundColor: "rgba(0,0,0,0.6)",
-        backdropFilter: "blur(3px)",
-      }}
+      style={{ backgroundColor: "rgba(0,0,0,0.6)", backdropFilter: "blur(3px)" }}
     >
       <div className="modal-dialog modal-dialog-centered">
-        <div
-          className="modal-content shadow-lg"
-          style={{
-            borderRadius: "12px",
-            border: "none",
-            overflow: "hidden",
-          }}
-        >
-          <form onSubmit={handleAddCategory}>
-            <div
-              className="modal-header"
-              style={{
-                background: "linear-gradient(90deg, #2575fc, #6a11cb)",
-                color: "white",
-                borderBottom: "none",
-              }}
-            >
+        <div className="modal-content shadow-lg rounded-3 border-0">
+          <form onSubmit={handleSubmit}>
+            {/* Header */}
+            <div className="modal-header bg-primary text-white">
               <h5 className="modal-title">➕ Add New Category</h5>
               <button
                 type="button"
@@ -61,47 +43,35 @@ const AddCategory = ({ show, onClose, onSuccess }) => {
               ></button>
             </div>
 
+            {/* Body */}
             <div className="modal-body p-4">
               <input
                 type="text"
-                className="form-control form-control-lg"
+                className="form-control mb-3"
                 placeholder="Category Name"
-                value={newCategory}
-                onChange={(e) => setNewCategory(e.target.value)}
+                value={cName}
+                onChange={(e) => setCName(e.target.value)}
                 required
-                style={{
-                  borderRadius: "8px",
-                  border: "1px solid #ced4da",
-                  padding: "10px 14px",
-                }}
+              />
+
+              <input
+                type="file"
+                className="form-control"
+                accept="image/*"
+                onChange={(e) => setCImage(e.target.files[0])}
               />
             </div>
 
-            <div
-              className="modal-footer"
-              style={{
-                borderTop: "1px solid #dee2e6",
-                padding: "15px 20px",
-              }}
-            >
+            {/* Footer */}
+            <div className="modal-footer border-0">
               <button
                 type="button"
                 className="btn btn-outline-secondary"
                 onClick={onClose}
-                style={{ borderRadius: "8px", minWidth: "100px" }}
               >
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="btn btn-primary"
-                style={{
-                  borderRadius: "8px",
-                  minWidth: "120px",
-                  background: "linear-gradient(90deg, #2575fc, #6a11cb)",
-                  border: "none",
-                }}
-              >
+              <button type="submit" className="btn btn-primary">
                 Add Category
               </button>
             </div>

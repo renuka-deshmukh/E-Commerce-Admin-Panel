@@ -1,8 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const AddBrand = ({ show, onClose, onSubmit }) => {
   const [bName, setBName] = useState("");
   const [bImage, setBImage] = useState(null);
+
+  useEffect(() => {
+    if (show) {
+      setBName("");
+      setBImage(null);
+    }
+  }, [show]);
 
   if (!show) return null;
 
