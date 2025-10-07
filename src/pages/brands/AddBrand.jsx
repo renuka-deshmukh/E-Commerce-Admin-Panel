@@ -1,95 +1,67 @@
-import React from "react";
+import React, { useState } from "react";
 
-const AddBrand = ({ show, onClose, onSubmit, newBrand, setNewBrand }) => {
-    if (!show) return null;
+const AddBrand = ({ show, onClose, onSubmit }) => {
+  const [bName, setBName] = useState("");
+  const [bImage, setBImage] = useState(null);
 
-    return (
-        <div
-            className="modal show d-block"
-            tabIndex="-1"
-            style={{
-                backgroundColor: "rgba(0,0,0,0.6)",
-                backdropFilter: "blur(3px)",
-            }}
-        >
-            <div className="modal-dialog modal-dialog-centered">
-                <div
-                    className="modal-content shadow-lg"
-                    style={{
-                        borderRadius: "12px",
-                        border: "none",
-                        overflow: "hidden",
-                    }}
-                >
-                    <form onSubmit={onSubmit}>
-                        {/* Header */}
-                        <div
-                            className="modal-header"
-                            style={{
-                                background: "linear-gradient(90deg, #2575fc, #6a11cb)",
-                                color: "white",
-                                borderBottom: "none",
-                            }}
-                        >
-                            <h5 className="modal-title">➕ Add New Brand</h5>
-                            <button
-                                type="button"
-                                className="btn-close btn-close-white"
-                                onClick={onClose}
-                            ></button>
-                        </div>
+  if (!show) return null;
 
-                        {/* Body */}
-                        <div className="modal-body p-4">
-                            <input
-                                type="text"
-                                className="form-control form-control-lg"
-                                placeholder="Brand Name"
-                                value={newBrand}
-                                onChange={(e) => setNewBrand(e.target.value)}
-                                required
-                                style={{
-                                    borderRadius: "8px",
-                                    border: "1px solid #ced4da",
-                                    padding: "10px 14px",
-                                }}
-                            />
-                        </div>
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!bName.trim()) return alert("Please enter a brand name");
 
-                        {/* Footer */}
-                        <div
-                            className="modal-footer"
-                            style={{
-                                borderTop: "1px solid #dee2e6",
-                                padding: "15px 20px",
-                            }}
-                        >
-                            <button
-                                type="button"
-                                className="btn btn-outline-secondary"
-                                onClick={onClose}
-                                style={{ borderRadius: "8px", minWidth: "100px" }}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="submit"
-                                className="btn btn-primary"
-                                style={{
-                                    borderRadius: "8px",
-                                    minWidth: "120px",
-                                    background: "linear-gradient(90deg, #2575fc, #6a11cb)",
-                                    border: "none",
-                                }}
-                            >
-                                Add Brand
-                            </button>
-                        </div>
-                    </form>
-                </div>
+    const formData = new FormData();
+    formData.append("bName", bName);
+    if (bImage) formData.append("myfile", bImage); // must match backend multer field name
+
+    onSubmit(formData);
+  };
+
+  return (
+    <div
+      className="modal show d-block"
+      tabIndex="-1"
+      style={{ backgroundColor: "rgba(0,0,0,0.6)" }}
+    >
+      <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-content shadow-lg rounded-3 border-0">
+          <form onSubmit={handleSubmit}>
+            <div className="modal-header bg-primary text-white">
+              <h5 className="modal-title">Add New Brand</h5>
+              <button type="button" className="btn-close btn-close-white" onClick={onClose}></button>
             </div>
+
+            <div className="modal-body p-4">
+              <input
+                type="text"
+                className="form-control mb-3"
+                placeholder="Brand Name"
+                value={bName}
+                onChange={(e) => setBName(e.target.value)}
+                required
+              />
+
+              <input
+                type="file"
+                className="form-control"
+                accept="image/*"
+                onChange={(e) => setBImage(e.target.files[0])}
+              />
+            </div>
+
+            <div className="modal-footer border-0">
+              <button type="button" className="btn btn-outline-secondary" onClick={onClose}>
+                Cancel
+              </button>
+              <button type="submit" className="btn btn-primary">
+                Add Brand
+              </button>
+            </div>
+          </form>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default AddBrand;

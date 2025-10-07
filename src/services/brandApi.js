@@ -2,7 +2,10 @@ import axiosInstance from "./api";
 
 export const getAllBrands = () => axiosInstance.get('/brand/getAllBrands');
 
-export const createBrands = (brandData) => axiosInstance.post('/brand/createBrand', brandData);
+export const createBrands = (formData) =>
+  axiosInstance.post("/brand/createBrand", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 
 export const deleteBrand = (id) => axiosInstance.delete(`/brand/deleteBrands/${id}`);
 
