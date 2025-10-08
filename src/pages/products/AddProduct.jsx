@@ -1,170 +1,119 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const AddProduct = ({
-  show,
-  onClose,
-  onSubmit,
-  newProduct,
-  setNewProduct,
-  categories,
-  brands,
-}) => {
+const AddProduct = ({ show, onClose, onSubmit, categories, brands }) => {
+  const [pName, setPName] = useState("");
+  const [pDescription, setPDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [quentity, setQuentity] = useState("");
+  const [catID, setCatID] = useState("");
+  const [brandID, setBrandID] = useState("");
+  const [pImage, setPImage] = useState([]);
+
+  useEffect(() => {
+    if (show) {
+      setPName("");
+      setPDescription("");
+      setPrice("");
+      setQuentity("");
+      setCatID("");
+      setBrandID("");
+      setPImage([]);
+    }
+  }, [show]);
+
   if (!show) return null;
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!pName.trim()) return alert("Please enter product name");
+    if (!price) return alert("Please enter price");
+    if (!brandID) return alert("Please select brand");
+
+    const formData = new FormData();
+    formData.append("pName", pName);
+    formData.append("pDescription", pDescription);
+    formData.append("price", price);
+    formData.append("quentity", quentity);
+    formData.append("catID", catID);
+    formData.append("brandID", brandID);
+   if(pImage) formData.append("myfile", pImage);
+
+    onSubmit(formData);
+  };
+
   return (
-    <div
-      className="modal show d-block"
-      tabIndex="-1"
-      style={{
-        backgroundColor: "rgba(0,0,0,0.6)",
-        backdropFilter: "blur(3px)",
-      }}
-    >
+    <div className="modal show d-block" style={{ backgroundColor: "rgba(0,0,0,0.6)" }}>
       <div className="modal-dialog modal-dialog-centered">
-        <div
-          className="modal-content shadow-lg"
-          style={{
-            borderRadius: "12px",
-            border: "none",
-            overflow: "hidden",
-          }}
-        >
-          <form onSubmit={onSubmit}>
-            {/* Modal Header */}
-            <div
-              className="modal-header"
-              style={{
-                background: "linear-gradient(90deg, #2575fc, #6a11cb)",
-                color: "white",
-                borderBottom: "none",
-              }}
-            >
+        <div className="modal-content shadow-lg rounded-3 border-0">
+          <form onSubmit={handleSubmit}>
+            <div className="modal-header bg-primary text-white">
               <h5 className="modal-title">➕ Add New Product</h5>
-              <button
-                type="button"
-                className="btn-close btn-close-white"
-                onClick={onClose}
-              ></button>
+              <button type="button" className="btn-close btn-close-white" onClick={onClose}></button>
             </div>
 
-            {/* Modal Body */}
             <div className="modal-body p-4">
-              {/* Product Name */}
               <input
                 type="text"
-                className="form-control form-control-lg mb-3"
+                className="form-control mb-3"
                 placeholder="Product Name"
-                value={newProduct.pName || ""}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, pName: e.target.value })
-                }
-                required
-                style={{ borderRadius: "8px" }}
+                value={pName}
+                onChange={(e) => setPName(e.target.value)}
               />
-
-              {/* Description */}
               <textarea
                 className="form-control mb-3"
                 placeholder="Description"
-                value={newProduct.pDescription || ""}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, pDescription: e.target.value })
-                }
-                rows="3"
-                style={{ borderRadius: "8px" }}
-              ></textarea>
-
-              {/* Price */}
+                value={pDescription}
+                onChange={(e) => setPDescription(e.target.value)}
+              />
               <input
                 type="number"
                 className="form-control mb-3"
                 placeholder="Price"
-                value={newProduct.price || ""}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, price: e.target.value })
-                }
-                required
-                style={{ borderRadius: "8px" }}
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
               />
-
-              {/* Quantity */}
               <input
                 type="number"
                 className="form-control mb-3"
                 placeholder="Quantity"
-                value={newProduct.quentity || ""}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, quentity: e.target.value })
-                }
-                required
-                style={{ borderRadius: "8px" }}
+                value={quentity}
+                onChange={(e) => setQuentity(e.target.value)}
               />
-
-              {/* Category Select */}
               <select
                 className="form-control mb-3"
-                value={newProduct.catID || ""}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, catID: e.target.value })
-                }
-                required
-                style={{ borderRadius: "8px" }}
+                value={catID}
+                onChange={(e) => setCatID(e.target.value)}
               >
                 <option value="">Select Category</option>
                 {categories.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.cName}
-                  </option>
+                  <option key={c.id} value={c.id}>{c.cName}</option>
                 ))}
               </select>
-
-              {/* Brand Select */}
               <select
-                className="form-control"
-                value={newProduct.brandID || ""}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, brandID: e.target.value })
-                }
-                required
-                style={{ borderRadius: "8px" }}
+                className="form-control mb-3"
+                value={brandID}
+                onChange={(e) => setBrandID(e.target.value)}
               >
                 <option value="">Select Brand</option>
                 {brands.map((b) => (
-                  <option key={b.id} value={b.id}>
-                    {b.bName}
-                  </option>
+                  <option key={b.id} value={b.id}>{b.bName}</option>
                 ))}
               </select>
+              <input
+                type="file"
+                className="form-control"
+                accept="image/*"
+                multiple
+                onChange={(e) => setPImage(e.target.files[0])}
+              />
             </div>
 
-            {/* Modal Footer */}
-            <div
-              className="modal-footer"
-              style={{
-                borderTop: "1px solid #dee2e6",
-                padding: "15px 20px",
-              }}
-            >
-              <button
-                type="button"
-                className="btn btn-outline-secondary"
-                onClick={onClose}
-                style={{ borderRadius: "8px", minWidth: "100px" }}
-              >
+            <div className="modal-footer border-0">
+              <button type="button" className="btn btn-outline-secondary" onClick={onClose}>
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="btn btn-primary"
-                style={{
-                  borderRadius: "8px",
-                  minWidth: "120px",
-                  background: "linear-gradient(90deg, #2575fc, #6a11cb)",
-                  border: "none",
-                }}
-              >
-                Add Product
-              </button>
+              <button type="submit" className="btn btn-primary">Add Product</button>
             </div>
           </form>
         </div>

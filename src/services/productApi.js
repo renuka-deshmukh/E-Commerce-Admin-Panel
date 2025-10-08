@@ -2,7 +2,9 @@ import axiosInstance from "./api";
 
 export const getAllProducts = () => axiosInstance.get('/product/getAllProducts');
 
-export const createProduct = (productData) => axiosInstance.post('/product/createProduct', productData);
+export const createProduct = (formData) =>  axiosInstance.post("/product/createProduct", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+});
 
 export const deleteProduct = (id) => axiosInstance.delete(`/product/deleteProduct/${id}`);
 

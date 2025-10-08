@@ -15,7 +15,7 @@ const AddCategory = ({ show, onClose, onSubmit }) => {
 
     const formData = new FormData();
     formData.append("cName", cName);
-    if (cImage) formData.append("myfile", cImage); // must match backend multer field name
+    if (cImage) formData.append("myfile", cImage); 
 
     onSubmit(formData);
 
