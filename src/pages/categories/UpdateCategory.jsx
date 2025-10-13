@@ -32,8 +32,8 @@ const UpdateCategory = ({ show, onClose, category, onUpdated }) => {
     try {
       // ✅ Properly build FormData
       const data = new FormData();
-      data.append("cName", formData.cName);
-      if (formData.cImage) data.append("cImage", formData.cImage);
+      data.append("myfile", formData.cName);
+      if (formData.cImage) data.append("myfile", formData.cImage);
 
       const response = await updateCategory(category.id, data);
 

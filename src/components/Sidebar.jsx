@@ -1,6 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./Sidebar.css"
+import "./Sidebar.css";
 
 import {
   FaHome,
@@ -10,10 +10,21 @@ import {
   FaUsers,
   FaCog,
   FaSignOutAlt,
+  FaUserCircle,
 } from "react-icons/fa";
+import { AuthContext } from "../context/AuthProvider";
+import { useContext } from "react";
 
 function Sidebar() {
   const location = useLocation();
+  const navigate = useNavigate(); // ✅ FIX: added useNavigate
+
+  const { loggedUser, logout } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   const links = [
     { path: "/", label: "Dashboard", icon: <FaHome /> },
@@ -30,15 +41,21 @@ function Sidebar() {
       style={{
         minHeight: "100vh",
         width: "240px",
-        background: "#f4f6f9", // soft background
+        background: "#f4f6f9",
         borderRight: "1px solid #dee2e6",
       }}
     >
       {/* Profile Section */}
       <div className="text-center mb-4 mt-5">
-       
-        <h6 className="fw-bold">Admin User</h6>
-        <small className="text-muted">Administrator</small>
+        <img
+          src="https://via.placeholder.com/70x70.png?text=Admin"
+          alt="Admin Avatar"
+          className="rounded-circle mb-2 shadow-sm"
+        />
+        <h6 className="fw-bold mb-0">{loggedUser?.name || "Admin User"}</h6>
+        <small className="text-muted">
+          {loggedUser?.email || "Administrator"}
+        </small>
       </div>
 
       {/* Navigation Links */}
@@ -48,9 +65,7 @@ function Sidebar() {
             <Link
               to={link.path}
               className={`nav-link d-flex align-items-center ${
-                location.pathname === link.path
-                  ? "active-link"
-                  : "text-dark"
+                location.pathname === link.path ? "active-link" : "text-dark"
               }`}
               style={{
                 borderRadius: "8px",
@@ -66,23 +81,26 @@ function Sidebar() {
         ))}
       </ul>
 
-      {/* Logout at Bottom */}
-      <div className="mt-auto">
-        <Link
-          to="/logout"
-          className="nav-link text-danger d-flex align-items-center"
-          style={{
-            borderRadius: "8px",
-            padding: "10px 14px",
-            fontWeight: 500,
-          }}
+      {/* Logout / Login at Bottom */}
+      {loggedUser ? (
+        <button
+          className="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center rounded-3"
+          onClick={handleLogout}
         >
           <FaSignOutAlt className="me-2" />
           Logout
-        </Link>
-      </div>
+        </button>
+      ) : (
+        <button
+          className="btn btn-outline-success w-100 d-flex align-items-center justify-content-center rounded-3"
+          onClick={() => navigate("/login")}
+        >
+          <FaUserCircle className="me-2" />
+          Login
+        </button>
+      )}
 
-      {/* Extra footer info */}
+      {/* Footer */}
       <div className="text-center mt-3 text-muted" style={{ fontSize: "12px" }}>
         © 2025 E-commerce Admin
       </div>
