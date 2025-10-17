@@ -68,7 +68,7 @@ const Brands = () => {
         </button>
       </div>
 
-      <div className="row g-4">
+      <div className="row g-5">
         {brands.length > 0 ? (
           brands.map((brand, i) => (
             <div key={brand.id || i} className="col-auto">
