@@ -11,6 +11,8 @@ const Brands = () => {
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedBrand, setSelectedBrand] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const brandsPerPage = 10;
 
   const fetchData = async () => {
     try {
@@ -30,6 +32,12 @@ const Brands = () => {
     fetchData();
   }, []);
 
+  const indexOfLastBrand = currentPage * brandsPerPage;
+  const indexOfFirstBrand = indexOfLastBrand - brandsPerPage;
+  const currentBrand = brands.slice(indexOfFirstBrand, indexOfLastBrand);
+  const totalPages = Math.ceil(brands.length / brandsPerPage);
+
+  const handlePageChange = (page) => setCurrentPage(page);
   const handleAddBrand = async (formData) => {
     try {
       const response = await createBrands(formData);
@@ -61,7 +69,7 @@ const Brands = () => {
 
   return (
     <div className="brands-page p-3">
-      <div className="d-flex justify-content-between align-items-center mb-4">
+      <div className="d-flex justify-content-between align-items-center mb-2">
         <h3 className="fw-bold">🏷️ Brands</h3>
         <button className="btn btn-gradient" onClick={() => setShowModal(true)}>
           <FaPlus className="me-2" /> Add Brand
@@ -69,8 +77,8 @@ const Brands = () => {
       </div>
 
       <div className="row g-5">
-        {brands.length > 0 ? (
-          brands.map((brand, i) => (
+        {currentBrand.length > 0 ? (
+          currentBrand.map((brand, i) => (
             <div key={brand.id || i} className="col-auto">
               <div className="category-card">
                 <img
@@ -109,6 +117,26 @@ const Brands = () => {
           <p className="text-center text-muted">No brands available</p>
         )}
       </div>
+
+       {totalPages > 1 && (
+        <div className="d-flex justify-content-center mt-3">
+          <nav>
+            <ul className="pagination mb-0">
+              {Array.from({ length: totalPages }, (_, i) => (
+                <li
+                  key={i}
+                  className={`page-item ${currentPage === i + 1 ? "active" : ""}`}
+                  onClick={() => handlePageChange(i + 1)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <span className="page-link">{i + 1}</span>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      )}
+
 
       <AddBrand show={showModal} onClose={() => setShowModal(false)} onSubmit={handleAddBrand} />
       <UpdateBrand

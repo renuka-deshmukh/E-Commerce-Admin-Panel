@@ -16,6 +16,8 @@ const Products = () => {
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 5;
 
 
   // ✅ Fetch all data
@@ -39,6 +41,13 @@ const Products = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProduct = products.slice(indexOfFirstProduct, indexOfLastProduct);
+  const totalPages = Math.ceil(products.length / productsPerPage);
+
+  const handlePageChange = (page) => setCurrentPage(page);
 
   // ✅ Helper functions
   const getCategoryName = (id) => {
@@ -85,39 +94,44 @@ const Products = () => {
       <table className="table align-middle custom-table">
         <thead>
           <tr>
-            <th>Product</th>
-            <th>Image</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Category</th>
-            <th>Brand</th>
-            <th>Action</th>
+            <th className="col-serial">S.No</th>
+            <th className="col-product">Product</th>
+            <th className="col-image">Image</th>
+            <th className="col-price">Price</th>
+            <th className="col-stock">Stock</th>
+            <th className="col-category">Category</th>
+            <th className="col-brand">Brand</th>
+            <th className="col-action">Action</th>
           </tr>
         </thead>
         <tbody>
-          {products.length > 0 ? (
-            products.map((product, i) => (
+          {currentProduct.length > 0 ? (
+            currentProduct.map((product, i) => (
               <tr key={product.id || i}>
-                <td className="fw-semibold">
+                <td className="col-price">{indexOfFirstProduct + i + 1}</td>
+                <td className="col-product">
                   {product.pName}
                   <div className="text-muted small">{product.pDescription}</div>
                 </td>
-                <td>
+                <td className="col-image">
                   <img
-                  src={
-                    product.pImage
-                  }
-                  alt={product.pImage}
-                  className="category-img img-fluid"
-                  style={{width:"90px", height:"60px"}} 
-                />
-
+                    src={product.pImage}
+                    alt={product.pName}
+                    className="category-img img-fluid"
+                    style={{
+                      width: "90px",
+                      height: "60px",
+                      objectFit: "cover", // <-- this makes the image cover the box
+                      borderRadius: "4px" // optional, for rounded corners
+                    }}
+                  />
                 </td>
-                <td>₹{product.price}</td>
-                <td>{product.quentity} pcs</td>
-                <td>{getCategoryName(product.catID)}</td>
-                <td>{getBrandName(product.brandID)}</td>
-                <td>
+
+                <td className="col-price">₹{product.price}</td>
+                <td className="col-stock">{product.quentity} pcs</td>
+                <td className="col-category">{getCategoryName(product.catID)}</td>
+                <td className="col-brand">{getBrandName(product.brandID)}</td>
+                <td className="col-action">
                   <button
                     className="btn btn-sm btn-outline-primary me-2"
                     onClick={() => {
@@ -140,6 +154,27 @@ const Products = () => {
           )}
         </tbody>
       </table>
+
+
+      {/* ✅ Pagination */}
+      {totalPages > 1 && (
+        <div className="d-flex justify-content-center mt-3">
+          <nav>
+            <ul className="pagination mb-0">
+              {Array.from({ length: totalPages }, (_, i) => (
+                <li
+                  key={i}
+                  className={`page-item ${currentPage === i + 1 ? "active" : ""}`}
+                  onClick={() => handlePageChange(i + 1)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <span className="page-link">{i + 1}</span>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      )}
 
       {/* ✅ Add Product Modal */}
       <AddProduct

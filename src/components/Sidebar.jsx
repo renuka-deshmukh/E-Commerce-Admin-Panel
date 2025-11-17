@@ -47,11 +47,7 @@ function Sidebar() {
     >
       {/* Profile Section */}
       <div className="text-center mb-4 mt-5">
-        <img
-          src="https://via.placeholder.com/70x70.png?text=Admin"
-          alt="Admin Avatar"
-          className="rounded-circle mb-2 shadow-sm"
-        />
+       
         <h6 className="fw-bold mb-0">{loggedUser?.name || "Admin User"}</h6>
         <small className="text-muted">
           {loggedUser?.email || "Administrator"}

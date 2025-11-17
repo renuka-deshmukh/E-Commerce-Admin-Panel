@@ -35,3 +35,48 @@
   background: #f1f5ff;
   transform: scale(1.01);
 }
+/* FIX COLUMN WIDTHS */
+
+.col-product {
+  width: 250px;      /* Product column fixed width */
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.col-serial {
+  width: 55px;
+  text-align: start;
+}
+
+.col-image {
+  width: 120px;
+  text-align: center;
+}
+
+.col-price {
+  width: 100px;
+}
+
+.col-stock {
+  width: 100px;
+}
+
+.col-category {
+  width: 160px;
+}
+
+.col-brand {
+  width: 110px;
+}
+
+.col-action {
+  width: 120px;
+  text-align: center;
+}
+
+/* Prevent table from auto-stretching */
+.custom-table {
+  table-layout: fixed;
+  width: 100%;
+}

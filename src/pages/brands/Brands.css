@@ -1,8 +1,8 @@
 /* brand Card */
 .brand-card {
   position: relative;
-  width: 180px;   /* smaller card */
-  height: 180px;  /* square card */
+  width: 150px;   /* smaller card */
+  height: 150px;  /* square card */
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
@@ -64,7 +64,7 @@
 .brand-name-below {
   text-align: center;
   font-weight: 500;
-  margin-top: 8px;
+  margin-top: 5px;
   transition: opacity 0.3s ease;
   font-family: "Poppins", sans-serif;
 }

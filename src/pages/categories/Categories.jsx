@@ -72,7 +72,7 @@ const Categories = () => {
       </div>
 
       {/* Categories Grid */}
-      <div className="row g-4">
+      <div className="row g-5">
         {categories.length > 0 ? (
           categories.map((cat) => (
             <div key={cat.id} className="col-auto">
